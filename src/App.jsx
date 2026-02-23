@@ -7,7 +7,7 @@ import { useEffect, useState, useRef } from "react";
 const API_KEY = import.meta.env.VITE_APP_OPENWEATHER_API_KEY;
 
 function App() {
-  const [city, setCity] = useState("Ankara");
+  const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
   const [forecast, setForecast] = useState(null);
@@ -16,6 +16,33 @@ function App() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const suggestionsRef = useRef(null);
+
+  // Kullanıcının konumunu al ve şehir olarak ayarla
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data && data.length > 0) {
+                setCity(data[0].name);
+              } else {
+                setCity("Ankara");
+              }
+            })
+            .catch(() => setCity("Ankara"));
+        },
+        () => {
+          // Konum izni reddedilirse varsayılan şehir
+          setCity("Ankara");
+        }
+      );
+    } else {
+      setCity("Ankara");
+    }
+  }, []);
 
   useEffect(() => {
     if (!city) return;
@@ -176,7 +203,7 @@ function App() {
       <div className="w-full h-[100px] text-5xl font-extrabold justify-center items-center flex pb-30">{city}</div>
 
       <div className="w-full h-[100px] flex justify-center items-center gap-15">
-        <img src={iconUrl} alt={weather.weather[0].description} className="w-48 h-48" style={{ filter: "brightness(0) saturate(100%) invert(52%) sepia(89%) saturate(1467%) hue-rotate(196deg) brightness(102%) contrast(101%)" }} />
+        <img src={iconUrl} alt={weather.weather[0].description} className="w-48 h-48" />
         <div className="text-9xl font-extrabold justify-center items-center">{Math.round(weather.main.temp)}°C</div>
       </div>
 
@@ -209,7 +236,7 @@ function App() {
           {dailyForecast.map((day, i) => (
             <div key={i} className={`flex flex-col justify-start pt-6 items-center w-64 h-48 rounded-xl border ${darkMode ? "border-gray-700 bg-gray-800" : "border-gray-300 bg-white"}`}>
               <span className={`font-bold text-xl ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{getDayName(day.dt_txt)}</span>
-              <img src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`} alt={day.weather[0].description} className="w-16 h-16" style={{ filter: "brightness(0) saturate(100%) invert(52%) sepia(89%) saturate(1467%) hue-rotate(196deg) brightness(102%) contrast(101%)" }} />
+              <img src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`} alt={day.weather[0].description} className="w-16 h-16" />
               <span className={`font-bold text-lg ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{Math.round(day.main.temp)}°C</span>
             </div>
           ))}
