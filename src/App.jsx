@@ -260,7 +260,10 @@ function App() {
         <div className="flex
              overflow-x-auto
              md:overflow-visible
-             md:w-full flex items-center gap-6 mt-6 px-3">
+             md:w-full flex items-center gap-6 mt-6 px-4
+  md:px-0
+  md:justify-center
+  md:gap-18">
           {dailyForecast.map((day, i) => (
             <div key={i} className={`flex flex-col gap-y-4 justify-start pt-6 items-center w-48 h-48 rounded-xl border shrink-0 ${darkMode ? "border-gray-700 bg-gray-800" : "border-gray-300 bg-white"}`}>
               <span className={`font-bold text-xl ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{getDayName(day.dt_txt)}</span>
