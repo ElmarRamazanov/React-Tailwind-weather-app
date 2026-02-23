@@ -177,24 +177,24 @@ function App() {
         : "linear-gradient(180deg, #ffffff 0%, #e8f1fc 50%, #dceefb 100%)" }}
     >
 
-      <div className="w-full h-[128px] flex justify-center items-center relative">
+      <div className="w-full h-[128px] flex items-center relative md:justify-center">
         <TiWeatherCloudy size={75} color="#3A9AFF" />
-        <div className="text-4xl font-bold ml-4 cursor-pointer">SkyCast</div>
+        <div className="text-2xl md:text-4xl font-bold ml-4 cursor-pointer">SkyCast</div>
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className={`absolute right-10 top-1/2 -translate-y-1/2 p-3 rounded-full transition-colors duration-300 cursor-pointer shadow-lg border ${darkMode ? "bg-gray-700 hover:bg-gray-600 border-gray-600" : "bg-white hover:bg-gray-100 border-gray-300"}`}
+          className={`absolute right-5  md:right-10 top-1/2 -translate-y-1/2 p-3 rounded-full transition-colors duration-300 cursor-pointer shadow-lg border ${darkMode ? "bg-gray-700 hover:bg-gray-600 border-gray-600" : "bg-white hover:bg-gray-100 border-gray-300"}`}
         >
           {darkMode ? <BsSunFill size={22} color="#FDB813" /> : <BsMoonFill size={22} color="#3A9AFF" />}
         </button>
       </div>
 
-      <div className="w-full h-[64px] flex justify-center items-center" ref={suggestionsRef}>
+      <div className="h-14 flex justify-start ml-15 md:w-full md:h-[64px] md:flex md:justify-center md:items-center" ref={suggestionsRef}>
         <div className="relative w-1/2">
-          <GoSearch className="absolute left-3 top-1/2 -translate-y-1/2 z-10" size={20} color={darkMode ? "#9CA3AF" : "#000"} />
+          <GoSearch className="absolute left-2 top-4/10 md:left-3 md:top-1/2 -translate-y-1/2 z-10" size={20} color={darkMode ? "#9CA3AF" : "#000"} />
           <input
             type="text"
             value={query}
-            className={`w-full p-2 pl-10 rounded-md focus:outline-none shadow-lg border ${darkMode ? "bg-gray-800 border-gray-600 text-white placeholder-gray-400" : "bg-white border-black text-black"}`}
+            className={`w-xs md:w-full py-2 pl-10 rounded-md focus:outline-none shadow-lg border ${darkMode ? "bg-gray-800 border-gray-600 text-white placeholder-gray-400" : "bg-white border-black text-black"}`}
             placeholder="Şehir ara..."
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
@@ -206,7 +206,7 @@ function App() {
             }}
           />
           {showSuggestions && suggestions.length > 0 && (
-            <ul className={`absolute z-50 w-full mt-1 rounded-md shadow-lg border max-h-60 overflow-y-auto ${darkMode ? "bg-gray-800 border-gray-600" : "bg-white border-gray-300"}`}>
+            <ul className={`w-xs md:absolute z-50 w-full mt-1 rounded-md shadow-lg border max-h-60 overflow-y-auto ${darkMode ? "bg-gray-800 border-gray-600" : "bg-white border-gray-300"}`}>
               {suggestions.map((s, i) => (
                 <li
                   key={i}
@@ -227,12 +227,12 @@ function App() {
 
       <div className="w-full h-[100px] text-5xl font-extrabold justify-center items-center flex pb-30">{city}</div>
 
-      <div className="w-full h-[100px] flex justify-center items-center gap-15">
+      <div className="w-full flex flex-col h-[300px] md:w-full h-[100px] flex justify-center items-center gap-15">
         {getWeatherIcon(weather.weather[0].icon, 200)}
-        <div className="text-9xl font-extrabold justify-center items-center">{Math.round(weather.main.temp)}°C</div>
+        <div className="text-7xl md:text-9xl font-extrabold justify-center items-center">{Math.round(weather.main.temp)}°C</div>
       </div>
 
-      <div className={`w-full flex items-center justify-center mx-auto gap-20 mt-30 border-t pt-10 border-b pb-10 ${darkMode ? "border-gray-700" : "border-gray-300"}`}>
+      <div className={`w-full flex flex-wrap md:w-full flex items-center justify-center mx-auto gap-20 mt-30 border-t pt-10 border-b pb-10 ${darkMode ? "border-gray-700" : "border-gray-300"}`}>
         <div className={`flex flex-col justify-start pt-6 items-center w-64 h-48 rounded-xl border ${darkMode ? "border-gray-700 bg-gray-800" : "border-gray-300 bg-white"}`}>
           <WiStrongWind size={55} className={`border-2 rounded-xl my-2 ${darkMode ? "border-blue-400 bg-blue-900/30" : "border-blue-200 bg-blue-50"}`} color="#3A9AFF" />
           <span className={`ml-2 font-bold text-xl ${darkMode ? "text-gray-300" : "text-gray-700"}`}>Rüzgar</span>
@@ -257,9 +257,12 @@ function App() {
 
       <div>
         <h1 className="text-2xl font-bold text-center mt-10">Sonraki 5 Gün</h1>
-        <div className="w-full flex items-center justify-center mx-auto gap-18 mt-10">
+        <div className="flex
+             overflow-x-auto
+             md:overflow-visible
+             md:w-full flex items-center gap-6 mt-6 px-3">
           {dailyForecast.map((day, i) => (
-            <div key={i} className={`flex flex-col gap-y-4 justify-start pt-6 items-center w-48 h-48 rounded-xl border ${darkMode ? "border-gray-700 bg-gray-800" : "border-gray-300 bg-white"}`}>
+            <div key={i} className={`flex flex-col gap-y-4 justify-start pt-6 items-center w-48 h-48 rounded-xl border shrink-0 ${darkMode ? "border-gray-700 bg-gray-800" : "border-gray-300 bg-white"}`}>
               <span className={`font-bold text-xl ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{getDayName(day.dt_txt)}</span>
               {getWeatherIcon(day.weather[0].icon, 50)}
               <span className={`font-bold text-lg ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{Math.round(day.main.temp)}°C</span>
