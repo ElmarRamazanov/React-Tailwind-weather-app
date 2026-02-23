@@ -257,9 +257,9 @@ function App() {
 
       <div>
         <h1 className="text-2xl font-bold text-center mt-10">Sonraki 5 Gün</h1>
-        <div className="w-full flex items-center justify-center mx-auto gap-20 mt-10">
+        <div className="w-full flex items-center justify-center mx-auto gap-18 mt-10">
           {dailyForecast.map((day, i) => (
-            <div key={i} className={`flex flex-col justify-start pt-6 items-center w-64 h-48 rounded-xl border ${darkMode ? "border-gray-700 bg-gray-800" : "border-gray-300 bg-white"}`}>
+            <div key={i} className={`flex flex-col gap-y-4 justify-start pt-6 items-center w-48 h-48 rounded-xl border ${darkMode ? "border-gray-700 bg-gray-800" : "border-gray-300 bg-white"}`}>
               <span className={`font-bold text-xl ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{getDayName(day.dt_txt)}</span>
               {getWeatherIcon(day.weather[0].icon, 50)}
               <span className={`font-bold text-lg ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{Math.round(day.main.temp)}°C</span>
