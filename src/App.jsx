@@ -1,7 +1,8 @@
 import { TiWeatherCloudy } from "react-icons/ti";
 import { GoSearch } from "react-icons/go";
 import { WiHumidity, WiStrongWind, WiThermometer, WiBarometer } from "react-icons/wi";
-import { BsMoonFill, BsSunFill } from "react-icons/bs";
+import { IoSunny, IoMoon, IoPartlySunny, IoCloudyNight, IoCloud, IoCloudy, IoRainy, IoThunderstorm, IoSnow } from "react-icons/io5";
+import { BsMoonFill, BsSunFill, BsCloudFog2Fill } from "react-icons/bs";
 import { useEffect, useState, useRef } from "react";
 
 const API_KEY = import.meta.env.VITE_APP_OPENWEATHER_API_KEY;
@@ -142,7 +143,31 @@ function App() {
     );
   }
 
-  const iconUrl = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`;
+  const iconUrl = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
+
+  const getWeatherIcon = (iconCode, size = 200) => {
+    const iconMap = {
+      "01d": <IoSunny size={size} color="#3A9AFF" />,
+      "01n": <IoMoon size={size} color="#3A9AFF" />,
+      "02d": <IoPartlySunny size={size} color="#3A9AFF" />,
+      "02n": <IoCloudyNight size={size} color="#3A9AFF" />,
+      "03d": <IoCloud size={size} color="#3A9AFF" />,
+      "03n": <IoCloud size={size} color="#3A9AFF" />,
+      "04d": <IoCloudy size={size} color="#3A9AFF" />,
+      "04n": <IoCloudy size={size} color="#3A9AFF" />,
+      "09d": <IoRainy size={size} color="#3A9AFF" />,
+      "09n": <IoRainy size={size} color="#3A9AFF" />,
+      "10d": <IoRainy size={size} color="#3A9AFF" />,
+      "10n": <IoRainy size={size} color="#3A9AFF" />,
+      "11d": <IoThunderstorm size={size} color="#3A9AFF" />,
+      "11n": <IoThunderstorm size={size} color="#3A9AFF" />,
+      "13d": <IoSnow size={size} color="#3A9AFF" />,
+      "13n": <IoSnow size={size} color="#3A9AFF" />,
+      "50d": <BsCloudFog2Fill size={size * 0.85} color="#3A9AFF" />,
+      "50n": <BsCloudFog2Fill size={size * 0.85} color="#3A9AFF" />,
+    };
+    return iconMap[iconCode] || <IoCloud size={size} color="#3A9AFF" />;
+  };
 
   return (
     <div
@@ -203,7 +228,7 @@ function App() {
       <div className="w-full h-[100px] text-5xl font-extrabold justify-center items-center flex pb-30">{city}</div>
 
       <div className="w-full h-[100px] flex justify-center items-center gap-15">
-        <img src={iconUrl} alt={weather.weather[0].description} className="w-48 h-48" />
+        {getWeatherIcon(weather.weather[0].icon, 200)}
         <div className="text-9xl font-extrabold justify-center items-center">{Math.round(weather.main.temp)}°C</div>
       </div>
 
@@ -236,7 +261,7 @@ function App() {
           {dailyForecast.map((day, i) => (
             <div key={i} className={`flex flex-col justify-start pt-6 items-center w-64 h-48 rounded-xl border ${darkMode ? "border-gray-700 bg-gray-800" : "border-gray-300 bg-white"}`}>
               <span className={`font-bold text-xl ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{getDayName(day.dt_txt)}</span>
-              <img src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`} alt={day.weather[0].description} className="w-16 h-16" />
+              {getWeatherIcon(day.weather[0].icon, 50)}
               <span className={`font-bold text-lg ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{Math.round(day.main.temp)}°C</span>
             </div>
           ))}
