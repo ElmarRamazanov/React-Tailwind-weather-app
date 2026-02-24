@@ -115,3 +115,9 @@ src/
 ## ⭐ If you like this project
 
 Projeyi beğendiysen ⭐ bırakmayı unutma 🙂
+
+
+Note: This project uses OpenWeather free API directly from the client 
+because it is a demo portfolio project. 
+In a production environment, the API key would be stored securely 
+on a backend and accessed via a proxy.
